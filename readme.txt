@@ -126,6 +126,9 @@ Visit the [plugin homepage](https://wpforchurch.com/wordpress-plugins/sermon-man
 
 ## Changelog ##
 
+### 2.17.1 ###
+Fixed: Compability issues with PHP 8.x
+
 ### 2.16.9 ###
 Fixed: Issues saving with PHP 8.0 WP 5.9.2
 Fixed: PHP 8 error for twig and divi for sermon manager pro
