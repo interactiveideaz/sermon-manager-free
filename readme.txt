@@ -125,9 +125,12 @@ Visit the [plugin homepage](https://wpforchurch.com/wordpress-plugins/sermon-man
 2. Sermon Files
 
 ## Changelog ##
-
 ### 2.17.1 ###
 Fixed: Compability issues with PHP 8.x
+### 2.17.0 ###
+Fixed: Error when updating the content.
+Fixed: PHP Error Unparenthesized.
+Fixed: RSS feed not working with PHP 8.0.
 
 ### 2.16.9 ###
 Fixed: Issues saving with PHP 8.0 WP 5.9.2
