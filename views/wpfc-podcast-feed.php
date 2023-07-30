@@ -295,6 +295,8 @@ $cover_image_url  = $settings['itunes_cover_image'];
 			<?php echo $category_override; ?>
 		<?php endif; ?>
 		<?php
+		$podcast_enclosure_url = get_option("sermonmanager_podcast_enclosure_url");
+		$use_https = ($podcast_enclosure_url == "yes")?true:false;
 		if ( $sermon_podcast_query->have_posts() ) :
 			while ( $sermon_podcast_query->have_posts() ) :
 				$sermon_podcast_query->the_post();
@@ -303,7 +305,7 @@ $cover_image_url  = $settings['itunes_cover_image'];
 				$audio_id          = get_post_meta( $post->ID, 'sermon_audio_id', true );
 				$audio_url_wp      = $audio_id ? wp_get_attachment_url( intval( $audio_id ) ) : false;
 				$audio_url         = $audio_id && $audio_url_wp ? $audio_url_wp : get_post_meta( $post->ID, 'sermon_audio', true );
-				$audio_raw         = str_ireplace( 'https://', 'http://', $audio_url );
+				$audio_raw         = $use_https ? str_ireplace( 'http://', 'https://', $audio_url ) : str_ireplace( 'https://', 'http://', $audio_url );
 				$audio_p           = strrpos( $audio_raw, '/' ) + 1;
 				$audio_raw         = urldecode( $audio_raw );
 				$audio             = substr( $audio_raw, 0, $audio_p ) . rawurlencode( substr( $audio_raw, $audio_p ) );
@@ -313,7 +315,7 @@ $cover_image_url  = $settings['itunes_cover_image'];
 				$series            = strip_tags( get_the_term_list( $post->ID, 'wpfc_sermon_series', '', ', ', '' ) );
 				$topics            = strip_tags( get_the_term_list( $post->ID, 'wpfc_sermon_topics', '', ', ', '' ) );
 				$post_image        = get_sermon_image_url( $settings['podcast_sermon_image_series'] );
-				$post_image        = str_ireplace( 'https://', 'http://', ! empty( $post_image ) ? $post_image : '' );
+				$post_image        =  $use_https ? str_ireplace( 'http://', 'https://', ! empty( $post_image ) ? $post_image : '' ) :  str_ireplace( 'https://', 'http://', ! empty( $post_image ) ? $post_image : '' );
 				$audio_duration    = get_post_meta( $post->ID, '_wpfc_sermon_duration', true ) ?: '0:00';
 				$audio_file_size   = get_post_meta( $post->ID, '_wpfc_sermon_size', 'true' ) ?: 0;
 				$description       = strip_shortcodes( get_post_meta( $post->ID, 'sermon_description', true ) );
@@ -330,11 +332,12 @@ $cover_image_url  = $settings['itunes_cover_image'];
 				}
 
 				if ( $settings['podtrac'] ) {
-					$audio = 'http://dts.podtrac.com/redirect.mp3/' . esc_url( preg_replace( '#^https?://#', '', $audio ) );
+					$audio =  $use_https ? 'https://dts.podtrac.com/redirect.mp3/' . esc_url( preg_replace( '#^https?://#', '', $audio ) ) :  'http://dts.podtrac.com/redirect.mp3/' . esc_url( preg_replace( '#^https?://#', '', $audio ) );
 				} else {
 					// As per RSS 2.0 spec, the enclosure URL must be HTTP only:
 					// http://www.rssboard.org/rss-specification#ltenclosuregtSubelementOfLtitemgt .
-					$audio = preg_replace( '/^https:/i', 'http:', $audio );
+					// $audio = preg_replace( '/^https:/i', 'http:', $audio );
+					$audio =  $use_https ? preg_replace( '/^http:/i', 'https:', $audio ) : preg_replace( '/^https:/i', 'http:', $audio );
 				}
 				?>
 

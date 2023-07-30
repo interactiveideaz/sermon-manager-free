@@ -458,17 +458,34 @@ class SM_Shortcodes {
 			unset( $atts['tax'] );
 		}
 
+	
+
+		$hide_title = false;
+		$show_description = true;
+
 		// For compatibility.
 		if ( ! empty( $atts['show_desc'] ) ) {
-			$atts['show_description'] = $atts['show_desc'];
-			unset( $atts['show_desc'] );
+			$show_description = $atts['show_desc'] == 'yes' ? true : false;
+			// unset( $atts['show_desc'] );
 		}
+
+		// For compatibility.
+		if ( ! empty( $atts['hide_title'] ) ) {
+			$hide_title = $atts['hide_title'] == 'yes' ? true : false;
+			// unset( $atts['hide_title'] );
+		}
+
+
 
 		// Join default and user options.
 		$args = shortcode_atts( $args, $atts, 'sermon_images' );
-
+		
+		// error_log("args === ".print_r($args,true));
 		// Convert to bool.
-		$args['show_description'] = false;
+		// $args['show_description'] = false;
+		// $args['hide_title'] = false;
+
+
 
 		// Check if we are using a SM taxonomy, and if we are, convert to valid taxonomy name.
 		if ( $this->convert_taxonomy_name( $args['display'], true ) ) {
@@ -500,9 +517,6 @@ class SM_Shortcodes {
 		// $terms will always return an array
 		if ( ! empty( $terms ) ) {
 
-			// Convert to bool.
-			$args['show_description'] = false;
-			$args['hide_title'] = false;
 			$list = '<ul id="wpfc_images_grid">';
             $size = (isset($atts['size'])) ? $atts['size'] : 'sermon_medium' ;
 			foreach ( (array) $terms as $term ) {
@@ -510,10 +524,10 @@ class SM_Shortcodes {
 
 				$list .= '<li class="wpfc_grid_image">';
 				$list .= '<a href="' . $term_url . '">' . wp_get_attachment_image( $term->image_id, $size ) . '</a>';
-				if ( false == $args['hide_title'] || 'no' == $args['hide_title'] ) {
+				if ( !$hide_title) {
 					$list .= '<h3 class="wpfc_grid_title"><a href="' . $term_url . '">' . $term->name . '</a></h3>';
 				}
-				if ( true == $args['show_description'] ) {
+				if ( $show_description ) {
 					if ( ! empty( $term->description ) ) {
 						$list .= '<div class="taxonomy-description">' . $term->description . '</div>';
 					}
@@ -1205,7 +1219,7 @@ class SM_Shortcodes {
 								   
 								if ( $query->max_num_pages !=  $paged && $paged == 1  ) {
 								
-								  echo ' <a class="next page-numbers" href="'. get_permalink( $post_ID ) .'page/'. $paged + 1 .'">Next &raquo;</a>';
+								  echo ' <a class="next page-numbers" href="'. get_permalink( $post_ID ) .'page/'. ($paged + 1) .'">Next &raquo;</a>';								 
 								
 								}
 								

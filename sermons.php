@@ -3,11 +3,12 @@
  * Plugin Name: Sermon Manager for WordPress
  * Plugin URI: https://www.wpforchurch.com/products/sermon-manager-for-wordpress/
  * Description: Add audio and video sermons, manage speakers, series, and more.
- * Version: 2.17.1
+ * Version: 2.17.1.2
  * Author: WP for Church
  * Author URI: https://www.wpforchurch.com/
  * Requires at least: 4.5
- * Tested up to: 5.9.3
+ * Tested up to wordpress: 6.2
+ * Tested up to PHP : 8.0.2
  *
  * Text Domain: sermon-manager-for-wordpress
  * Domain Path: /languages/

@@ -686,7 +686,6 @@ function sermon_image_plugin_get_associations( $refresh = false ) {
 	if ( empty( $associations ) || $refresh ) {
 		$associations = sermon_image_plugin_sanitize_associations( get_option( 'sermon_image_plugin' ) );
 	}
-
 	return $associations;
 }
 
