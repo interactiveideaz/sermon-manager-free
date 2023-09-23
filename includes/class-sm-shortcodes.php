@@ -38,6 +38,8 @@ class SM_Shortcodes {
 		add_shortcode( 'sermons_sm', array( self::get_instance(), 'display_sermons' ) );
 		// Filtering shortcode.
 		add_shortcode( 'sermon_sort_fields', array( self::get_instance(), 'display_sermon_sorting' ) );
+		// Display latest sermons shortcode.
+		add_shortcode( 'latest_sermon', array( self::get_instance(), 'display_latest_sermon' ) );
 
 		// Load deprecated shortcode aliasing.
 		$this->legacy_shortcodes();
@@ -62,6 +64,7 @@ class SM_Shortcodes {
 	public function legacy_shortcodes() {
 		add_shortcode( 'list-sermons', array( self::get_instance(), 'display_sermons_list' ) );
 		add_shortcode( 'sermon-images', array( self::get_instance(), 'display_images' ) );
+		add_shortcode( 'latest_sermon', array( self::get_instance(), 'display_latest_sermon' ) );
 	}
 
 	/**
@@ -115,11 +118,7 @@ class SM_Shortcodes {
 
 		// Remove excluded services.
 		if ( is_array( $services_to_exclude ) && is_array( $services_to_include )) {
-			
-			if ( count( $services_to_exclude ) > 0 ) {
-				$services = array_diff( $services_to_include, $services_to_exclude );
-			}
-			
+			$services = array_diff( $services_to_include, $services_to_exclude );			
 		}
 
 		if ( SM_OB_ENABLED ) {
@@ -781,6 +780,149 @@ class SM_Shortcodes {
 
 		return null;
 	}
+
+
+
+	/**
+	 * Latest sermon display code
+	 *
+	 * @param array $atts Shortcode parameters.
+	 *
+	 * @type int    $atts ['per_page']            How many sermons per page.
+	
+	 * @return string
+	 */
+	function display_latest_sermon( $atts = array() ) {
+		
+		global $post_ID;
+
+		// Enqueue scripts and styles.
+		if ( ! defined( 'SM_ENQUEUE_SCRIPTS_STYLES' ) ) {
+			define( 'SM_ENQUEUE_SCRIPTS_STYLES', true );
+		}
+
+		// Unquote and verify boolean values.
+		if ( is_array( $atts ) || is_object( $atts ) ) {
+			// SermonManager::fetchOptionalValue($atts);
+			foreach ( $atts as &$att ) {
+				$att = $this->_unquote( $att );
+			}
+		}
+
+		//  Fetch Optional Perameter From ShortCode
+		if ( is_array( $atts ) || is_object( $atts ) ) {
+			foreach($atts as $key=>$value){
+				if($key == 'image'){
+					SermonManager::$image = $value;
+				}
+				if($key == 'title'){
+					SermonManager::$title = $value;
+				}
+				if($key == 'description'){
+					SermonManager::$description = $value;
+				}
+			}
+		}
+
+		//order="DESC", orderby="post_modified"		
+		// Default options.
+		$args = array(
+			'per_page'           => 10,
+			'order'              => 'ASC',
+			'orderby'            => 'post_modified',
+			'image_size'         => 'post-thumbnail',			
+		);
+	
+
+		// Merge default and user options.
+		$args = shortcode_atts( $args, $atts, 'sermons' );
+
+
+		// Set query args.
+		$query_args = array(
+			'post_type'      => 'wpfc_sermon',
+			'posts_per_page' => $args['per_page'],
+			'order'          => $args['order'],
+			'orderby'        => $args['post_date'],
+			'post_status' 	 => 'publish'			
+		);
+
+		// Check if it's a valid ordering argument.
+		if ( ! in_array( strtolower( $args['orderby'] ), array(
+			'date',
+			'preached',
+			'date_preached',
+			'published',
+			'date_published',
+			'id',
+			'none',
+			'title',
+			'name',
+			'rand',
+			'comment_count',
+			'post_date'
+		) ) ) {
+			$args['orderby'] = 'post_date';
+		}
+	
+
+		$query_args['orderby'] = $args['orderby'];		
+
+		$query = new WP_Query( $query_args );
+
+		// Add query to the args.
+		$args['query'] = $query;
+
+		// Set image size. Deprecated.
+		add_filter( 'wpfc_sermon_excerpt_sermon_image_size', function () use ( $args ) {
+			return $args['image_size'];
+		} );
+
+		define( 'WPFC_SM_SHORTCODE', true );
+
+		if ( $query->have_posts() ) {
+			if ( SM_OB_ENABLED ) {
+				ob_start(); ?>
+				<div id="wpfc-sermons-latest">
+					<div id="wpfc-sermons-latest">
+						<?php
+						
+						while ( $query->have_posts() ) {
+							$query->the_post();
+							global $post;
+
+							// Allows preventing the call of wpfc_sermon_excerpt_v2().
+							if ( apply_filters( 'sm_shortcode_output_override', false ) ) {
+								$output = '';
+							} else {
+								$output = '<div class="wpfc-sermon wpfc-sermon-latest">' . wpfc_sermon_excerpt_v2( true, $args ) . '</div>';
+							}
+							echo apply_filters( 'sm_shortcode_sermons_single_output', $output, $post, $args );
+						}
+						?>
+					</div>
+
+					<?php wp_reset_postdata(); ?>
+					
+				</div>
+				<?php
+				$return = ob_get_clean();
+			} else {
+				$return = '';
+			}
+
+			/**
+			 * Allows to filter the complete output of the shortcode.
+			 */
+			return apply_filters( 'sm_shortcode_sermons_output', $return, $query );
+		} else {
+			return 'No sermons found.';
+		}
+	}
+
+
+
+
 
 	/**
 	 * Main sermon display code

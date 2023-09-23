@@ -282,7 +282,7 @@ $cover_image_url  = $settings['itunes_cover_image'];
 			<itunes:name><?php echo $owner_name; ?></itunes:name>
 			<itunes:email><?php echo $owner_email; ?></itunes:email>
 		</itunes:owner>
-		<itunes:explicit>no</itunes:explicit>
+		<itunes:explicit>false</itunes:explicit>
 		<?php if ( $cover_image_url ) : ?>
 			<itunes:image href="<?php echo $cover_image_url; ?>"/>
 		<?php endif; ?>
