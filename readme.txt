@@ -5,7 +5,7 @@ Tags: church, sermon, sermons, preaching, podcasting, manage, managing, podcasts
 Requires at least: 4.7.0  
 Tested up to: 6.0
 Requires PHP: 7.4  
-Stable tag: 2.17.0
+Stable tag: 2.17.2
 License: GPLv2  
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,6 +50,7 @@ Soon you will be able to migrate from those 3rd party plugins to Sermon Manager 
 * `[sermon_images]` — This will list all sermon series and their associated image in a grid.
 * `[list_podcasts]` — This will list available podcast services with nice large buttons.
 * `[list_sermons]` — This will list all series or speakers in a simple unordered list.
+* `[latest_sermon]` — This will list all  latest sermons.
 * `[latest_series]` — This will display information about the latest sermon series, including the image, title (optional), and description (optional).
 * `[sermon_sort_fields]` — Dropdown selections to quickly navigate to all sermons in a series or by a particular speaker.
 
@@ -125,6 +126,10 @@ Visit the [plugin homepage](https://wpforchurch.com/wordpress-plugins/sermon-man
 2. Sermon Files
 
 ## Changelog ##
+
+### 2.17.2 ###
+ADD: [latest_sermon per_page=10 order="ASC" orderby="post_modified"] New Shortcode
+Fixed: itunes:explicit "false", first it says no (using W3C Feed link)
 
 ### 2.17.1.2 ###
 Fixed: [sermon_images hide_title=”yes”] shortcode working
