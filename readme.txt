@@ -127,8 +127,10 @@ Visit the [plugin homepage](https://wpforchurch.com/wordpress-plugins/sermon-man
 
 ## Changelog ##
 
+
 ### 2.19.0 ###
 Fixed: TwentyTwentyFour theme design support added.
+
 
 ### 2.18.0 ###
 Fixed: In this release, we have addressed an issue where the post content field was not updating correctly with the post meta key. This fix ensures that the post content field now accurately reflects the data from the post meta key.
