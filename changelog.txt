@@ -1,5 +1,5 @@
 
-### 2.19.0 ###
+### 2.20.0 ###
 Fixed: TwentyTwentyFour theme design support added.
 
 

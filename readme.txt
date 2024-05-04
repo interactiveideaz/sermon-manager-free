@@ -3,9 +3,9 @@ Contributors: wpforchurch, Alex Gutierrez
 Donate link: http://wpforchurch.com/  
 Tags: church, sermon, sermons, preaching, podcasting, manage, managing, podcasts, itunes  
 Requires at least: 4.7.0  
-Tested up to: 6.0
+Tested up to: 6.5
 Requires PHP: 7.4  
-Stable tag: 2.18.0
+Stable tag: 2.20.0
 License: GPLv2  
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -128,7 +128,7 @@ Visit the [plugin homepage](https://wpforchurch.com/wordpress-plugins/sermon-man
 ## Changelog ##
 
 
-### 2.19.0 ###
+### 2.20.0 ###
 Fixed: TwentyTwentyFour theme design support added.
 
 
