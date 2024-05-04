@@ -3,7 +3,7 @@
  * Plugin Name: Sermon Manager for WordPress
  * Plugin URI: https://www.wpforchurch.com/products/sermon-manager-for-wordpress/
  * Description: Add audio and video sermons, manage speakers, series, and more.
- * Version: 2.17.2
+ * Version: 2.18.0
  * Author: WP for Church
  * Author URI: https://www.wpforchurch.com/
  * Requires at least: 4.5
@@ -811,12 +811,28 @@ class SermonManager { // phpcs:ignore
 		add_action(
 			'save_post_wpfc_sermon',
 			function ( $post_ID, $post, $update ) {
-				error_log("1888");			
-				error_log(print_r($_POST,true));			
-				// error_log(print_r($_POST),true);
+				// error_log("1888");			
+				//error_log("===============");
+				//error_log(print_r($_POST,true));
+				if (isset($_POST['post_content'])) {
+				    $post_content = wp_kses_post($_POST['post_content']);
+				    $post_id = wp_kses_post($_POST['ID']);
+				   	global $wpdb;
+					$table_name = $wpdb->prefix . 'posts';				
+					$wpdb->query(
+					    $wpdb->prepare(
+					        "UPDATE $table_name SET post_content = %s WHERE ID = %d",
+					        $post_content,
+					        $post_id
+					    )
+					);
+					update_post_meta( $post_id, 'sermon_description', $post_content);	
+				}
+
+							
 				if ( ! isset( $_POST['sermon_audio_id'] ) && ! isset( $_POST['sermon_audio'] ) ) {
 					return;
-				}
+				}	
 
 				$audio_id  = sanitize_text_field($_POST['sermon_audio_id']);
 				$audio_url = sanitize_text_field($_POST['sermon_audio']);
@@ -964,3 +980,61 @@ function on_post_view_update_multiple_sermon_meta_data()
     	
     }
 }
+
+
+add_action(
+		'sm_cmb2_meta_fields',
+		function ( $sermon_details_meta ) {
+			/**
+			 * Sermon Details meta box.
+			 *
+			 * @var $sermon_details_meta \CMB2
+			 */
+
+			$sermon_details_meta->remove_field( 'sermon_description' );
+		}
+	);
+
+
+	// Disable Gutenberg until we add Guten-blocks.
+	add_filter(
+		'use_block_editor_for_post_type',
+		function ( $can_edit, $post_type ) {
+			if ( 'wpfc_sermon' === $post_type ) {
+				$can_edit = false;
+			}
+
+			return $can_edit;
+		},
+		10,
+		2
+	);
+
+
+	// Hijack default editor to use our meta description.
+	add_action(
+		'edit_form_after_title',
+		function () {
+			global $post;
+
+			if ( get_post_type() !== 'wpfc_sermon' ) {
+				return;
+			}
+
+			/**
+			 * The sermon.
+			 *
+			 * @var $post \WP_Post
+			 */
+
+			$GLOBALS['sm_post_content'] = $post->post_content; // phpcs:ignore
+			$post->post_content = get_post_meta( $post->ID, 'sermon_description', true );
+			// error_log(print_r($post,true));
+			$my_post = array(
+		      'ID'           => $post->ID,
+		      'post_content' => $post->post_content,
+		  );
+			wp_update_post( $my_post );
+
+		}
+	);

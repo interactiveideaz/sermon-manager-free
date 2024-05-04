@@ -5,7 +5,7 @@ Tags: church, sermon, sermons, preaching, podcasting, manage, managing, podcasts
 Requires at least: 4.7.0  
 Tested up to: 6.0
 Requires PHP: 7.4  
-Stable tag: 2.17.2
+Stable tag: 2.18.0
 License: GPLv2  
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,6 +126,12 @@ Visit the [plugin homepage](https://wpforchurch.com/wordpress-plugins/sermon-man
 2. Sermon Files
 
 ## Changelog ##
+
+### 2.19.0 ###
+Fixed: TwentyTwentyFour theme design support added.
+
+### 2.18.0 ###
+Fixed: In this release, we have addressed an issue where the post content field was not updating correctly with the post meta key. This fix ensures that the post content field now accurately reflects the data from the post meta key.
 
 ### 2.17.2 ###
 ADD: [latest_sermon per_page=10 order="ASC" orderby="post_modified"] New Shortcode
