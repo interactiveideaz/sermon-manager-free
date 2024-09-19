@@ -128,6 +128,11 @@ Visit the [plugin homepage](https://wpforchurch.com/wordpress-plugins/sermon-man
 ## Changelog ##
 
 
+### 2.30.0 ###
+Fixed: Removed the "Description" custom field.
+Added: "Data Sync" button in Settings to resolve data issues after updating to the latest version. If you encounter any data issues, please use the sync button.
+
+
 ### 2.20.0 ###
 Fixed: TwentyTwentyFour theme design support added.
 

@@ -3,7 +3,7 @@
  * Plugin Name: Sermon Manager for WordPress
  * Plugin URI: https://www.wpforchurch.com/products/sermon-manager-for-wordpress/
  * Description: Add audio and video sermons, manage speakers, series, and more.
- * Version: 2.20.0
+ * Version: 2.30.0
  * Author: WP for Church
  * Author URI: https://www.wpforchurch.com/
  * Requires at least: 4.5
@@ -210,7 +210,8 @@ class SermonManager { // phpcs:ignore
 			}
 		}
 
-		$content       = '';
+		$content = $post->post_content;
+
 		// $bible_passage = get_post_meta( $post_ID, 'bible_passage', true );
 		// $has_preachers = has_term( '', 'wpfc_preacher', $post );
 		// $has_series    = has_term( '', 'wpfc_sermon_series', $post );
@@ -235,11 +236,11 @@ class SermonManager { // phpcs:ignore
 		// 	$content .= strip_tags( get_the_term_list( $post->ID, 'wpfc_sermon_series', __( 'Series:', 'sermon-manager-for-wordpress' ) . ' ', ', ', '' ) );
 		// }
 
-		$description = strip_tags( trim( get_post_meta( $post->ID, 'sermon_description', true ) ) );
+		// $description = strip_tags( trim( get_post_meta( $post->ID, 'sermon_description', true ) ) );
 
-		if ( '' !== $description ) {
-			$content .=  $description;
-		}
+		// if ( '' !== $description ) {
+		// 	$content .=  $description;
+		// }
 
 		/**
 		 * Allows to modify sermon content that will be saved as "post_content".
@@ -254,11 +255,11 @@ class SermonManager { // phpcs:ignore
 		$content = apply_filters( 'sm_sermon_post_content', $content, $post_ID, $post, $skip_check );
 		$content = apply_filters( "sm_sermon_post_content_$post_ID", $content, $post_ID, $post, $skip_check );
 
-		if ( ! $sm_skip_content_check ) {
-			if ( ! SermonManager::getOption( 'post_content_enabled', 1 ) ) {
-				$content = '';
-			}
-		}
+		// if ( ! $sm_skip_content_check ) {
+		// 	if ( ! SermonManager::getOption( 'post_content_enabled', 1 ) ) {
+		// 		$content = '';
+		// 	}
+		// }
 
 		$wpdb->query(
 			$wpdb->prepare(
@@ -810,10 +811,7 @@ class SermonManager { // phpcs:ignore
 		// Remove audio ID if it's not needed.
 		add_action(
 			'save_post_wpfc_sermon',
-			function ( $post_ID, $post, $update ) {
-				// error_log("1888");			
-				//error_log("===============");
-				//error_log(print_r($_POST,true));
+			function ( $post_ID, $post, $update ) {				
 				if (isset($_POST['post_content'])) {
 				    $post_content = wp_kses_post($_POST['post_content']);
 				    $post_id = wp_kses_post($_POST['ID']);
@@ -826,7 +824,7 @@ class SermonManager { // phpcs:ignore
 					        $post_id
 					    )
 					);
-					update_post_meta( $post_id, 'sermon_description', $post_content);	
+					// update_post_meta( $post_id, 'sermon_description', $post_content);	
 				}
 
 							
@@ -1028,7 +1026,7 @@ add_action(
 			 */
 
 			$GLOBALS['sm_post_content'] = $post->post_content; // phpcs:ignore
-			$post->post_content = get_post_meta( $post->ID, 'sermon_description', true );
+			// $post->post_content = get_post_meta( $post->ID, 'sermon_description', true );
 			// error_log(print_r($post,true));
 			$my_post = array(
 		      'ID'           => $post->ID,

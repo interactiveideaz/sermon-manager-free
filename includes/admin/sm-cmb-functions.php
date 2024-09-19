@@ -71,16 +71,16 @@ function wpfc_sermon_metaboxes() {
 		'id'   => 'bible_passage',
 		'type' => 'text',
 	) );
-	$sermon_details_meta->add_field( array(
-		'name'    => esc_html__( 'Description', 'sermon-manager-for-wordpress' ),
-		'desc'    => esc_html__( 'Type a brief description about this sermon, an outline, or a full manuscript', 'sermon-manager-for-wordpress' ),
-		'id'      => 'sermon_description',
-		'type'    => 'wysiwyg',
-		'options' => array(
-			'textarea_rows' => 7,
-			'media_buttons' => true,
-		),
-	) );
+	// $sermon_details_meta->add_field( array(
+	// 	'name'    => esc_html__( 'Description', 'sermon-manager-for-wordpress' ),
+	// 	'desc'    => esc_html__( 'Type a brief description about this sermon, an outline, or a full manuscript', 'sermon-manager-for-wordpress' ),
+	// 	'id'      => 'sermon_description',
+	// 	'type'    => 'wysiwyg',
+	// 	'options' => array(
+	// 		'textarea_rows' => 7,
+	// 		'media_buttons' => true,
+	// 	),
+	// ) );
 
 	$sermon_files_meta = new_cmb2_box( array(
 		'id'           => 'wpfc_sermon_files',

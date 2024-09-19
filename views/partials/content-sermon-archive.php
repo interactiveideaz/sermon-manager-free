@@ -122,11 +122,11 @@ if ( get_sermon_image_url() && ! \SermonManager::getOption( 'disable_image_archi
 						<?php if ( has_excerpt( $post ) ) : ?>
 							<?php echo get_the_excerpt( $post ); ?>
 						<?php else : ?>
-							<?php echo wp_trim_words( get_post_meta( $post->ID, 'sermon_description', true ), 30 ); ?>
+							<?php echo wp_trim_words( $post->post_content, 30 ); ?>
 						<?php endif; ?>
 						<br/>
 					</div>
-					<?php if ( SermonManager::getOption( 'hide_read_more_when_not_needed' ) && str_word_count( get_post_meta( $post->ID, 'sermon_description', true ) ) > 30 ) : ?>
+					<?php if ( SermonManager::getOption( 'hide_read_more_when_not_needed' ) && str_word_count( $post->post_content ) > 30 ) : ?>
 						<div class="wpfc-sermon-description-read-more">
 							<a href="<?php echo get_permalink(); ?>"><?php echo __( 'Continue reading...', 'sermon-manager-for-wordpress' ); ?></a>
 						</div>

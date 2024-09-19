@@ -117,7 +117,7 @@ if(!function_exists('is_plugin_active')){
 				}else{
 					?>
 					<div class="wpfc-sermon-single-description">
-				<?php   wpfc_sermon_description() ?>					
+				<?php   the_content() ?>					
 				</div>
 					<?php
 				}
