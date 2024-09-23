@@ -110,6 +110,7 @@ class SermonManager { // phpcs:ignore
 
 		// Exec stuff after load.
 		do_action( 'sm_after_plugin_load' );
+
 	}
 
 
@@ -998,7 +999,8 @@ add_action(
 	add_filter(
 		'use_block_editor_for_post_type',
 		function ( $can_edit, $post_type ) {
-			if ( 'wpfc_sermon' === $post_type ) {
+			$disable_gutenberg_block_editor = get_option("sermonmanager_disable_gutenberg_block_editor");
+			if ( 'wpfc_sermon' === $post_type && $disable_gutenberg_block_editor ==="yes" ) {
 				$can_edit = false;
 			}
 

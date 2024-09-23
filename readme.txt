@@ -5,7 +5,7 @@ Tags: church, sermon, sermons, preaching, podcasting, manage, managing, podcasts
 Requires at least: 4.7.0  
 Tested up to: 6.5
 Requires PHP: 7.4  
-Stable tag: 2.20.0
+Stable tag: 2.30.0
 License: GPLv2  
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -131,6 +131,7 @@ Visit the [plugin homepage](https://wpforchurch.com/wordpress-plugins/sermon-man
 ### 2.30.0 ###
 Fixed: Removed the "Description" custom field.
 Added: "Data Sync" button in Settings to resolve data issues after updating to the latest version. If you encounter any data issues, please use the sync button.
+Added: Option to enable or disable the Gutenberg Block Editor for sermons.
 
 
 ### 2.20.0 ###
